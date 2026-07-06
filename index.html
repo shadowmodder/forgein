@@ -415,6 +415,52 @@ h1.hero-h em{
 .pro-btn:hover{background:var(--accent-hi)}
 .pro-note{font-size:.74rem;color:var(--muted);margin-top:8px;text-align:center}
 
+/* ── Pricing ─────────────────────────────────────────────────────── */
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:10px;overflow:hidden;
+  margin-bottom:0;
+}
+@media(max-width:720px){.pricing-grid{grid-template-columns:1fr}}
+.price-col{background:var(--surface);padding:32px 28px;display:flex;flex-direction:column}
+.price-col.featured{background:var(--surface2);border-top:2px solid var(--accent)}
+.price-tier{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.price-tier-badge{background:var(--accent);color:#000;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.04em}
+.price-amount{font-family:var(--mono);font-size:2.2rem;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
+.price-amount span{font-size:.9rem;font-weight:400;color:var(--muted2);letter-spacing:0}
+.price-desc{font-size:.82rem;color:var(--muted2);margin-bottom:24px;line-height:1.55;min-height:36px}
+.price-divider{border:none;border-top:1px solid var(--border);margin:0 0 20px}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:9px;flex:1;margin-bottom:28px}
+.price-features li{font-size:.82rem;color:var(--muted2);display:flex;align-items:baseline;gap:9px;line-height:1.4}
+.price-features li.yes::before{content:'✓';color:var(--green);font-family:var(--mono);font-size:.8rem;flex-shrink:0;font-weight:700}
+.price-features li.no::before{content:'—';color:var(--border2);font-family:var(--mono);font-size:.8rem;flex-shrink:0}
+.price-features li.yes{color:var(--muted2)}
+.price-features li.no{color:var(--muted);opacity:.6}
+.price-cta{
+  display:block;text-align:center;
+  font-family:var(--mono);font-size:.82rem;font-weight:700;
+  padding:10px;border-radius:var(--r);
+  transition:background .12s,color .12s,border-color .12s;
+  text-decoration:none;letter-spacing:.02em;
+}
+.price-cta-free{border:1px solid var(--border2);color:var(--muted2)}
+.price-cta-free:hover{border-color:var(--muted);color:var(--text);text-decoration:none}
+.price-cta-pro{background:var(--accent);color:#000}
+.price-cta-pro:hover{background:var(--accent-hi);text-decoration:none}
+.price-cta-team{background:var(--accent);color:#000}
+.price-cta-team:hover{background:var(--accent-hi);text-decoration:none}
+.pricing-note{margin-top:18px;text-align:center;font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+
+/* waitlist modal */
+.waitlist-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:200;place-items:center}
+.waitlist-overlay.open{display:grid}
+.waitlist-box{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:36px;width:100%;max-width:400px;margin:16px}
+.waitlist-h{font-family:var(--mono);font-size:1.1rem;font-weight:700;margin-bottom:8px}
+.waitlist-sub{font-size:.85rem;color:var(--muted2);line-height:1.6;margin-bottom:20px}
+.waitlist-close{position:absolute;top:12px;right:16px;font-family:var(--mono);font-size:.8rem;color:var(--muted);cursor:pointer}
+.waitlist-box{position:relative}
+
 /* ── Footer ──────────────────────────────────────────────────────── */
 footer{border-top:1px solid var(--border);padding:36px 0}
 .foot-inner{
@@ -767,35 +813,91 @@ context = <span class="cg">read</span>(~/.claude/CLAUDE.md)
   </div>
 </section>
 
-<!-- PRO -->
-<section class="section reveal">
+<!-- PRICING -->
+<section class="section reveal" id="pricing">
   <div class="wrap">
-    <div class="pro-wrap">
-      <div class="pro-inner">
-        <div class="pro-left">
-          <span class="pro-pill">Coming soon</span>
-          <h2 class="pro-h">Forgein Pro.<br>Every machine warm<br>from day one.</h2>
-          <p class="pro-p">The public registry and all three commands stay free forever. Pro solves what teams hit next: skills drift across machines, new engineers start cold, and institutional knowledge lives only in one person's memory files.</p>
-          <ul class="pro-list">
-            <li>Private skill registries — your org's standards as installable commands</li>
-            <li>Cross-machine memory sync — new machine, same warm context</li>
-            <li>Team skill sharing — one command configures every engineer's Claude</li>
-            <li>Usage analytics — see which skills your team uses and which drift</li>
-            <li>Compliance scan presets for regulated environments</li>
-          </ul>
-        </div>
-        <div class="pro-right">
-          <span class="pro-form-label">Early access</span>
-          <div class="pro-form-head">Get notified when Pro launches.</div>
-          <p class="pro-form-sub">One email when it's ready. No drip campaigns, no waitlist theatre.</p>
-          <input class="pro-input" type="email" id="pro-email" placeholder="you@company.com" autocomplete="email">
-          <button class="pro-btn" onclick="joinWaitlist()">Join the waitlist</button>
-          <p class="pro-note" id="pro-msg">No spam. One email when Pro ships.</p>
-        </div>
+    <span class="eyebrow">Pricing</span>
+    <h2 class="sh">Free forever for individuals.<br>Pro for teams that need to scale.</h2>
+    <p class="ssub">The three commands and the public registry stay free, always. Pro adds the infrastructure layer — private registries, memory sync, and org-wide configuration — that teams hit a wall without.</p>
+
+    <div class="pricing-grid">
+
+      <!-- FREE -->
+      <div class="price-col">
+        <div class="price-tier">Free</div>
+        <div class="price-amount">$0<span> / forever</span></div>
+        <p class="price-desc">Full toolkit for individual developers. No account required.</p>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li class="yes">Public skill registry (10+ skills)</li>
+          <li class="yes">/forgein optimize — workflow-aware install</li>
+          <li class="yes">/forgein mem — full memory CRUD</li>
+          <li class="yes">/forgein sec — 8-class security scan</li>
+          <li class="yes">Open source, MIT licensed</li>
+          <li class="no">API token (CLI auth)</li>
+          <li class="no">Memory sync across machines</li>
+          <li class="no">Private skill registry</li>
+          <li class="no">Team / org account</li>
+        </ul>
+        <a class="price-cta price-cta-free" href="#install">Install free ↗</a>
       </div>
+
+      <!-- PRO INDIVIDUAL -->
+      <div class="price-col featured">
+        <div class="price-tier">Pro Individual <span class="price-tier-badge">COMING SOON</span></div>
+        <div class="price-amount">$12<span> / month</span></div>
+        <p class="price-desc">For power users who work across multiple machines and want skills that follow them.</p>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li class="yes">Everything in Free</li>
+          <li class="yes">API token — CLI authenticates with your account</li>
+          <li class="yes">Memory sync (1 device → cloud → any device)</li>
+          <li class="yes">Private skill registry (up to 5 skills)</li>
+          <li class="yes">Personal usage analytics</li>
+          <li class="no">Org / team account</li>
+          <li class="no">Team skill registry (shared with members)</li>
+          <li class="no">New-hire warm-start flow</li>
+          <li class="no">Compliance scan presets</li>
+        </ul>
+        <button class="price-cta price-cta-pro" onclick="openWaitlist('pro')">Join waitlist</button>
+      </div>
+
+      <!-- PRO TEAM -->
+      <div class="price-col">
+        <div class="price-tier">Pro Team <span class="price-tier-badge">COMING SOON</span></div>
+        <div class="price-amount">$20<span> / user / mo</span></div>
+        <p class="price-desc">For engineering teams. Encode your standards once — every engineer's Claude starts warm.</p>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li class="yes">Everything in Pro Individual</li>
+          <li class="yes">Org account (up to 25 members)</li>
+          <li class="yes">Private team skill registry (unlimited skills)</li>
+          <li class="yes">New-hire warm-start: one command, fully configured</li>
+          <li class="yes">Team usage analytics dashboard</li>
+          <li class="yes">Compliance scan presets</li>
+          <li class="yes">Role-based access (owner / admin / member)</li>
+          <li class="yes">Invite flow with 7-day expiring tokens</li>
+          <li class="yes">Priority support</li>
+        </ul>
+        <button class="price-cta price-cta-team" onclick="openWaitlist('team')">Join waitlist</button>
+      </div>
+
     </div>
+    <p class="pricing-note">All plans include the full public registry · Free stays free as Pro launches · Cancel Pro anytime</p>
   </div>
 </section>
+
+<!-- WAITLIST MODAL -->
+<div class="waitlist-overlay" id="waitlist-overlay" onclick="closeWaitlist(event)">
+  <div class="waitlist-box">
+    <span class="waitlist-close" onclick="closeWaitlistDirect()">✕ close</span>
+    <div class="waitlist-h" id="waitlist-h">Join the Pro waitlist</div>
+    <p class="waitlist-sub">We're building this now. One email when your plan launches — no drip, no spam.</p>
+    <input class="pro-input" type="email" id="waitlist-email" placeholder="you@company.com" autocomplete="email">
+    <button class="pro-btn" onclick="submitWaitlist()" style="margin-top:4px">Notify me</button>
+    <p class="pro-note" id="waitlist-msg" style="margin-top:10px">Pro Individual · $12/mo on launch</p>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -849,16 +951,34 @@ function copyInstall() {
   });
 }
 
-// Waitlist
-function joinWaitlist() {
-  const el = document.getElementById('pro-email');
+// Waitlist modal
+let waitlistPlan = 'pro';
+function openWaitlist(plan) {
+  waitlistPlan = plan;
+  const h = document.getElementById('waitlist-h');
+  const note = document.getElementById('waitlist-msg');
+  h.textContent = plan === 'team' ? 'Join the Pro Team waitlist' : 'Join the Pro Individual waitlist';
+  note.textContent = plan === 'team' ? 'Pro Team · $20/user/mo on launch' : 'Pro Individual · $12/mo on launch';
+  note.style.color = '';
+  document.getElementById('waitlist-email').value = '';
+  document.getElementById('waitlist-overlay').classList.add('open');
+}
+function closeWaitlist(e) {
+  if (e.target === document.getElementById('waitlist-overlay')) closeWaitlistDirect();
+}
+function closeWaitlistDirect() {
+  document.getElementById('waitlist-overlay').classList.remove('open');
+}
+function submitWaitlist() {
+  const el = document.getElementById('waitlist-email');
   const email = el.value.trim();
   if (!email || !email.includes('@')) { el.focus(); return; }
-  const msg = document.getElementById('pro-msg');
-  msg.textContent = '✓ ' + email + ' added. We\'ll email you when Pro launches.';
+  const msg = document.getElementById('waitlist-msg');
+  msg.textContent = '✓ ' + email + ' added. One email when ' + (waitlistPlan === 'team' ? 'Pro Team' : 'Pro') + ' launches.';
   msg.style.color = 'var(--green)';
   el.value = '';
 }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlistDirect(); });
 
 // Scroll reveal
 const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: 0.06 });
