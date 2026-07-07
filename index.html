@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Forgein — Claude Code starts fresh. Forgein remembers.</title>
-<meta name="description" content="The persistence layer for Claude Code. Skill optimizer, memory manager, and security scanner — one install, works every session.">
-<meta property="og:title" content="Forgein — The persistence layer for Claude Code">
-<meta property="og:description" content="Claude Code starts fresh every session. Forgein makes it remember. Skill optimizer, memory manager, security scanner.">
+<title>Forgein — Claude Code, without the amnesia</title>
+<meta name="description" content="Sync your Claude Code memories across every machine. Edit them in the cloud. One command. Free forever for individuals.">
+<meta property="og:title" content="Forgein — Claude Code, without the amnesia">
+<meta property="og:description" content="Sync your Claude memories across every machine. Edit from the cloud. Skill optimizer and security scanner included free.">
 <meta property="og:url" content="https://forgein.ai">
 <style>
 /* ── Tokens ──────────────────────────────────────────────────────── */
@@ -508,10 +508,10 @@ footer{border-top:1px solid var(--border);padding:36px 0}
     <div>
       <div class="hero-kicker">
         <span class="kicker-line"></span>
-        Claude Code productivity toolkit
+        Claude Code, without the amnesia
       </div>
       <h1 class="hero-h">Claude starts<br>fresh every<br>session. <em>Forgein</em><br>remembers.</h1>
-      <p class="hero-sub">Three commands that persist your workflow context, surface the right skills from your actual git history, and catch security issues before you push.</p>
+      <p class="hero-sub">Sync your memories across every machine. Surface skills that fit your actual workflow. Catch security issues before you push. One install, free forever.</p>
 
       <div class="install-wrap" id="install">
         <div class="install-label">one-line install</div>
@@ -538,19 +538,17 @@ footer{border-top:1px solid var(--border);padding:36px 0}
           <span class="term-title">claude-code — forgein</span>
         </div>
         <div class="term-body">
-          <span class="tl"><span class="tp">$ </span><span class="tc">/forgein optimize</span></span>
-          <span class="tl tm" style="font-size:.74rem">reading CLAUDE.md · memory/ · git log</span>
+          <span class="tl"><span class="tp">$ </span><span class="tc">/forgein mem sync</span></span>
+          <span class="tl tm" style="font-size:.74rem">detecting project · ~/code/my-app</span>
           <span class="ts"></span>
-          <table class="tt">
-            <tr><td>#1</td><td class="to">pr-monitor</td><td>matched "open prs", "ci"</td></tr>
-            <tr><td>#2</td><td class="to">code-review</td><td>matched "pull request"</td></tr>
-            <tr><td>#3</td><td class="to">commit</td><td>matched "commits", "git"</td></tr>
-            <tr><td>#4</td><td class="to">test-gen</td><td>matched "pytest", "coverage"</td></tr>
-            <tr><td>#5</td><td class="to">standup</td><td>matched "sprint"</td></tr>
-          </table>
+          <span class="tl tg" style="font-weight:700">MEMORY SYNC</span>
+          <span class="tl">&nbsp;</span>
+          <span class="tl"><span class="ty">↑</span> <span class="to">user-profile.md</span>   <span class="tm">local → cloud</span></span>
+          <span class="tl"><span class="ty">↑</span> <span class="to">feedback-commits.md</span> <span class="tm">local → cloud</span></span>
+          <span class="tl"><span class="ty">↓</span> <span class="to">project-sprint.md</span>  <span class="tm">cloud → local</span></span>
           <span class="ts"></span>
-          <span class="tl"><span class="tm">Install all 5? </span><span class="tg">[Enter=yes / 1,3 / none]</span></span>
-          <span class="tl tm" style="font-size:.74rem;margin-top:6px">✓ 5 skills installed to ~/.claude/commands/</span>
+          <span class="tl tg">✓ sync complete — 2 pushed, 1 pulled.</span>
+          <span class="tl tm" style="font-size:.74rem;margin-top:4px">memories available at app.forgein.ai</span>
         </div>
       </div>
     </div>
@@ -818,8 +816,8 @@ context = <span class="cg">read</span>(~/.claude/CLAUDE.md)
 <section class="section reveal" id="pricing">
   <div class="wrap">
     <span class="eyebrow">Pricing</span>
-    <h2 class="sh">Free forever for individuals.<br>Pro for teams that need to scale.</h2>
-    <p class="ssub">The three commands and the public registry stay free, always. Pro adds the infrastructure layer — private registries, memory sync, and org-wide configuration — that teams hit a wall without.</p>
+    <h2 class="sh">Free forever for individuals.<br>Pro when you need to scale.</h2>
+    <p class="ssub">The three commands, the public registry, and memory sync all stay free. Pro removes the limits and adds the team infrastructure — shared registries, org-wide configuration, new-hire onboarding — that makes Claude productive across an entire engineering team.</p>
 
     <div class="pricing-grid">
 
@@ -827,16 +825,16 @@ context = <span class="cg">read</span>(~/.claude/CLAUDE.md)
       <div class="price-col">
         <div class="price-tier">Free</div>
         <div class="price-amount">$0<span> / forever</span></div>
-        <p class="price-desc">Full toolkit for individual developers. No account required.</p>
+        <p class="price-desc">Full toolkit for individual developers. Free account required for sync.</p>
         <hr class="price-divider">
         <ul class="price-features">
           <li class="yes">Public skill registry (10+ skills)</li>
           <li class="yes">/forgein optimize — workflow-aware install</li>
           <li class="yes">/forgein mem — full memory CRUD</li>
           <li class="yes">/forgein sec — 8-class security scan</li>
-          <li class="yes">Open source, MIT licensed</li>
-          <li class="no">API token (CLI auth)</li>
-          <li class="no">Memory sync across machines</li>
+          <li class="yes">1 API token (CLI auth)</li>
+          <li class="yes">Memory sync — 3 projects, 100 files each</li>
+          <li class="yes">Cloud dashboard — view &amp; edit memories</li>
           <li class="no">Private skill registry</li>
           <li class="no">Team / org account</li>
         </ul>
@@ -847,18 +845,18 @@ context = <span class="cg">read</span>(~/.claude/CLAUDE.md)
       <div class="price-col featured">
         <div class="price-tier">Pro Individual</div>
         <div class="price-amount">$4.99<span> / month</span></div>
-        <p class="price-desc">For power users who work across multiple machines and want skills that follow them.</p>
+        <p class="price-desc">Remove the limits. Sync unlimited projects and share context with your team.</p>
         <hr class="price-divider">
         <ul class="price-features">
           <li class="yes">Everything in Free</li>
-          <li class="yes">API token — CLI authenticates with your account</li>
-          <li class="yes">Memory sync (1 device → cloud → any device)</li>
+          <li class="yes">10 API tokens</li>
           <li class="yes">Unlimited memory projects</li>
-          <li class="yes">Edit memories from the cloud dashboard</li>
+          <li class="yes">Unlimited files per project</li>
+          <li class="yes">Team memory sync</li>
+          <li class="yes">Priority support</li>
           <li class="no">Team / org account</li>
           <li class="no">Team skill registry (shared with members)</li>
           <li class="no">New-hire warm-start flow</li>
-          <li class="no">Compliance scan presets</li>
         </ul>
         <a class="price-cta price-cta-pro" href="https://app.forgein.ai/signup">Get started →</a>
       </div>
@@ -894,7 +892,7 @@ context = <span class="cg">read</span>(~/.claude/CLAUDE.md)
     <span class="waitlist-close" onclick="closeWaitlistDirect()">✕ close</span>
     <div class="waitlist-h" id="waitlist-h">Join the Pro waitlist</div>
     <p class="waitlist-sub">We're building this now. One email when your plan launches — no drip, no spam.</p>
-    <input class="pro-input" type="email" id="waitlist-email" placeholder="you@company.com" autocomplete="email">
+    <input class="pro-input" type="email" id="waitlist-email" placeholder="you@example.com" autocomplete="email">
     <button class="pro-btn" onclick="submitWaitlist()" style="margin-top:4px">Notify me</button>
     <p class="pro-note" id="waitlist-msg" style="margin-top:10px">Pro Individual · $12/mo on launch</p>
   </div>
