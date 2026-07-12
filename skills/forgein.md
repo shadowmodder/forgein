@@ -413,6 +413,52 @@ echo "  ↓ $filePath"
 
 Print final summary: `✓ Sync complete — 2 pushed, 1 pulled.`
 
+**Auto-export adapter files (implicit export)**
+
+After sync completes, check which AI tool adapter files exist in the current project directory:
+
+```bash
+COPILOT_EXISTS=$(test -f ".github/copilot-instructions.md" && echo "yes" || echo "no")
+CURSOR_EXISTS=$(test -f ".cursorrules" && echo "yes" || echo "no")
+WINDSURF_EXISTS=$(test -f ".windsurfrules" && echo "yes" || echo "no")
+```
+
+For each that exists, silently regenerate it from the updated cloud memory:
+
+```bash
+# copilot
+if [ "$COPILOT_EXISTS" = "yes" ]; then
+  curl -sf -H "Authorization: Bearer $TOKEN" \
+    "https://api.forgein.ai/api/adapters/copilot?projectPath=$PROJECT_PATH" \
+    > .github/copilot-instructions.md
+  echo "  → .github/copilot-instructions.md updated"
+fi
+
+# cursor
+if [ "$CURSOR_EXISTS" = "yes" ]; then
+  curl -sf -H "Authorization: Bearer $TOKEN" \
+    "https://api.forgein.ai/api/adapters/cursor?projectPath=$PROJECT_PATH" \
+    > .cursorrules
+  echo "  → .cursorrules updated"
+fi
+
+# windsurf
+if [ "$WINDSURF_EXISTS" = "yes" ]; then
+  curl -sf -H "Authorization: Bearer $TOKEN" \
+    "https://api.forgein.ai/api/adapters/windsurf?projectPath=$PROJECT_PATH" \
+    > .windsurfrules
+  echo "  → .windsurfrules updated"
+fi
+```
+
+If any were updated, append to the summary:
+```
+  → Copilot, Cursor context files refreshed
+  (ChatGPT/Gemini: run /forgein export chatgpt or /forgein export gemini for updated paste text)
+```
+
+If none of the adapter files exist, print nothing — the user hasn't set up file-based exports yet.
+
 ---
 
 #### Team sync
