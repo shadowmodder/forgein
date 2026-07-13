@@ -49,6 +49,7 @@ This file covers what's shipped, what's in progress, and what's coming. It's upd
 
 ### Near-term (next 60 days)
 - [x] **Browser extension** — Chrome MV3 extension with floating button on chatgpt.com and gemini.google.com; injects your context on click
+- [x] **Policy / constraint layer** — org owners set block rules (redact regex matches) and require rules (prepend text) that apply to every member's adapter output
 - [ ] **Context versioning** — who changed which org context, when, with rollback
 - [ ] **Compliance export** — full audit trail as CSV/JSON (SOC2 evidence)
 - [ ] **SAML / SSO** — Okta, Google Workspace, Azure AD (schema exists; hardening in progress)
