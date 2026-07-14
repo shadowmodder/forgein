@@ -35,6 +35,7 @@ FORGEIN — AI context that follows you everywhere
   /forgein mem sync                Sync to cloud — all         free
                                    machines, all contexts
   /forgein mem sync --team         Sync team-shared folder     PRO ★
+  /forgein mem delete <file>       Remove a file from cloud    free
 
   /forgein setup                   First-run setup: dirs,      free
                                    auto-inject hook, CLAUDE.md
@@ -88,20 +89,27 @@ curl -sf -H "Authorization: Bearer $(cat ~/.config/forgein/token)" https://api.f
 - Valid JSON with `email` field → print `✓ Already authenticated as <email> · plan: <plan>` and stop.
 - 401 or empty → token is stale, proceed to re-authenticate.
 
-**Step 2 — Guide user to create token**
+**Step 2 — Guide user to authenticate**
 
 Print:
 ```
-To authenticate forgein:
+To authenticate forgein, choose a method:
 
-  1. Open https://app.forgein.ai/dashboard/tokens
-  2. Click "New token" — give it a name like "work-macbook"
-  3. Copy the full token (starts with fg_)
+  [1] Device login (recommended — token never passes through this chat)
+      Run in your terminal:  forgein login
+      This opens a browser, you approve, the token is stored locally.
 
-Paste your token:
+  [2] Paste a token manually
+      Open https://app.forgein.ai/dashboard/tokens
+      Click "New token", copy the full token (starts with fg_)
+      Then paste it here.
+
+Choice [1/2]:
 ```
 
-Read input. If it doesn't start with `fg_`: print `✗ That doesn't look like a forgein token (should start with fg_). Try again.` and re-prompt once.
+If the user chooses **1** or presses Enter: print `Run \`forgein login\` in your terminal to complete authentication, then return here and run /forgein auth to verify.` and stop.
+
+If the user chooses **2**: print `Paste your token:` and read input. If it doesn't start with `fg_`: print `✗ That doesn't look like a forgein token (should start with fg_). Try again.` and re-prompt once.
 
 **Step 3 — Verify and store**
 
@@ -647,10 +655,12 @@ RECOMMENDED SKILLS FOR YOUR WORKFLOW
 2  code-review    4    Multi-dimensional diff review       Matched: "pull request", "review"
 3  commit         3    Smart conventional commit messages  Matched: "commits", "git"
 4  vibe-sec       2    Security scan of staged changes     Matched: "security", "auth"
-5  standup        1    Daily standup from git + PRs        Matched: "sprint"
+5  standup        0    Daily standup from git + PRs        No direct signals — ranked by registry order
 
 All skills above are from the public registry — free to install.
 ```
+
+For skills with score 0, the "Why it fits you" column must read `No direct signals — ranked by registry order` (never show `Matched:` with an empty list).
 
 If plan is `pro`: also show private skills the user has created, labeled `[private]`.
 
@@ -676,13 +686,27 @@ If user enters `none` or `n`: exit without installing.
 
 Parse the next word as the mem subcommand. Default (no word): run `list`.
 
-Subcommands: `list`, `search`, `add`, `prune`, `audit`, `sync`.
+Subcommands: `list`, `search`, `add`, `prune`, `audit`, `delete`, `sync`.
 
 **Locate memory directory:**
+
+Claude Code normalizes the working directory path to a project key by replacing all non-alphanumeric characters (slashes, spaces, underscores, etc.) with hyphens. Derive the project directory by walking up from `pwd` until a matching `~/.claude/projects/` subdirectory is found:
+
 ```bash
-find ~/.claude/projects -name "MEMORY.md" 2>/dev/null | head -1
+SEARCH_DIR=$(pwd)
+MEMORY_DIR=""
+while [ "$SEARCH_DIR" != "/" ]; do
+  PROJECT_PATH=$(echo "$SEARCH_DIR" | sed 's|[^a-zA-Z0-9]|-|g')
+  CANDIDATE="$HOME/.claude/projects/$PROJECT_PATH/memory"
+  if [ -d "$CANDIDATE" ]; then
+    MEMORY_DIR="$CANDIDATE"
+    break
+  fi
+  SEARCH_DIR=$(dirname "$SEARCH_DIR")
+done
 ```
-Use the parent directory of the first result. If none found: print `Memory not configured. Enable auto-memory in Claude Code settings → Memory.` and stop.
+
+If `MEMORY_DIR` is still empty after the loop: print `Memory not configured. Enable auto-memory in Claude Code settings → Memory.` and stop.
 
 ---
 
@@ -825,6 +849,26 @@ MEMORY AUDIT
 
 ---
 
+### mem delete \<filePath\>
+
+Remove a synced memory file from the cloud. Requires authentication.
+
+```bash
+TOKEN=$(cat ~/.config/forgein/token 2>/dev/null)
+PROJECT_PATH=$(echo "$(pwd)" | sed 's|[^a-zA-Z0-9]|-|g')
+curl -sf -X DELETE \
+  -H "Authorization: Bearer $TOKEN" \
+  "https://api.forgein.ai/api/memory/files/<filePath>?projectPath=$PROJECT_PATH"
+```
+
+On success: `✓ <filePath> removed from cloud.`
+On 404: `✗ File not found in cloud — may already be deleted.`
+On 401: `✗ Token invalid. Run /forgein auth.`
+
+This only removes the file from the cloud manifest. The local file is untouched. To also remove it locally and from MEMORY.md, delete the file and remove its line from MEMORY.md manually.
+
+---
+
 ### mem sync
 
 Sync memory files for the current project across machines and contexts.
@@ -850,13 +894,24 @@ On 401 or network error: `✗ Token invalid. Run /forgein auth.` and stop.
 
 **Step 2 — Detect project**
 
+Claude Code normalizes the working directory path by replacing ALL non-alphanumeric characters with hyphens. Walk up from `pwd` to find the closest matching project directory:
+
 ```bash
-pwd
-PROJECT_PATH=$(pwd | sed 's|/|-|g')
-MEMORY_DIR="$HOME/.claude/projects/$PROJECT_PATH"
+SEARCH_DIR=$(pwd)
+MEMORY_DIR=""
+PROJECT_PATH=""
+while [ "$SEARCH_DIR" != "/" ]; do
+  PROJECT_PATH=$(echo "$SEARCH_DIR" | sed 's|[^a-zA-Z0-9]|-|g')
+  CANDIDATE="$HOME/.claude/projects/$PROJECT_PATH/memory"
+  if [ -d "$CANDIDATE" ]; then
+    MEMORY_DIR="$CANDIDATE"
+    break
+  fi
+  SEARCH_DIR=$(dirname "$SEARCH_DIR")
+done
 ```
 
-If directory doesn't exist: `✗ No memory directory for this project. Open this directory in Claude Code first.` and stop.
+If `MEMORY_DIR` is still empty: `✗ No memory directory for this project. Open this directory in Claude Code first.` and stop.
 
 **Step 3 — Check `--team` flag**
 
