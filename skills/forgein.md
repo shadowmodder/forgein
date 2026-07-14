@@ -607,9 +607,9 @@ Discover and install skills from the forgein public registry that match your wor
 
 Try in order, use first that succeeds:
 ```bash
-gh api repos/shadowmodder/forgein/contents/registry.json --jq '.content' | base64 -d
+gh api repos/forgeinai/forgein/contents/registry.json --jq '.content' | base64 -d
 ```
-Fallback: WebFetch `https://raw.githubusercontent.com/shadowmodder/forgein/main/registry.json`
+Fallback: WebFetch `https://raw.githubusercontent.com/forgeinai/forgein/main/registry.json`
 
 Parse JSON. Extract `skills` array.
 
@@ -672,7 +672,7 @@ Default (Enter with no input) = install all.
 
 For each selected skill:
 ```bash
-gh api repos/shadowmodder/forgein/contents/<file> --jq '.content' | base64 -d
+gh api repos/forgeinai/forgein/contents/<file> --jq '.content' | base64 -d
 ```
 Write to `~/.claude/commands/<install_as>`.
 
